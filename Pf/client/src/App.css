@@ -1,0 +1,143 @@
+/* App.css */
+
+/* General styles */
+body {
+  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+}
+
+.container {
+  margin-top: 50px !important;
+}
+
+/* Card styles */
+.card-header {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.card-footer {
+  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+}
+
+.btn-info {
+  background-color: #00a8ff !important; /* Azul más claro */
+  border-color: #00a8ff !important;
+  transition: background-color 0.3s ease; /* Animación de transición */
+}
+
+.btn-info:hover {
+  background-color: #0077b6 !important; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Form input styles */
+.input-group-text {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+}
+
+.form-control:focus {
+  border-color: #00a8ff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25) !important;
+}
+
+/* Table styles */
+.table thead th {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+}
+
+.table tbody tr:hover {
+  background-color: #e6e6e6 !important; /* Color de fondo más claro al pasar el mouse */
+}
+/* App.css */
+
+/* General styles */
+body {
+  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+  font-family: Arial, sans-serif !important; /* Tipografía genérica */
+}
+
+.container {
+  margin-top: 50px !important;
+}
+
+/* Card styles */
+.card-header {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 20px !important; /* Tamaño de fuente más grande */
+  text-transform: uppercase !important; /* Convertir a mayúsculas */
+}
+
+.card-footer {
+  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+}
+
+.btn-info {
+  background-color: #00a8ff !important; /* Azul más claro */
+  border-color: #00a8ff !important;
+  transition: background-color 0.3s ease; /* Animación de transición */
+  font-size: 16px !important; /* Tamaño de fuente del botón */
+  font-weight: bold !important;
+}
+
+.btn-info:hover {
+  background-color: #0077b6 !important; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Form input styles */
+.input-group-text {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.form-control {
+  font-size: 16px !important; /* Tamaño de fuente de los campos de entrada */
+}
+
+.form-control:focus {
+  border-color: #00a8ff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25) !important;
+}
+
+/* Table styles */
+.table thead th {
+  background-color: #00a8ff !important; /* Azul más claro */
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 16px !important; /* Tamaño de fuente de las cabeceras de tabla */
+}
+
+.table tbody tr:hover {
+  background-color: #e6e6e6 !important; /* Color de fondo más claro al pasar el mouse */
+}
+
+
+.dropdown-menu {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.container {
+  margin-top: 20px;
+}
+
+.dropdown-container {
+  margin-bottom: 20px;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+
