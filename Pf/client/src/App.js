@@ -8,6 +8,7 @@ import { Dropdown } from 'react-bootstrap';
 import Login from './login';
 import Register from './Register';
 
+
 function App() {
   const [Producto, setProducto] = useState("");
   const [Fecha, setFecha] = useState("");
@@ -156,6 +157,12 @@ function App() {
     getProductos();
   }, []);
 
+  const logout = () => {
+    if (window.confirm("¿Estás seguro de que deseas salir?")) {
+      window.location.href = '/Login';
+    }
+  }
+
   if (!loggedIn) {
     return (
       <div className="container">
@@ -178,6 +185,12 @@ function App() {
         <Dropdown.Toggle variant="primary" id="dropdown-basic" onClick={() => setDropdownOpen(!dropdownOpen)}>
           Registrar un producto
         </Dropdown.Toggle>
+
+        <button type="button"
+                      onClick={() => {
+                        logout()
+                      }}
+                      className="btn btn-danger">Cerrar Sesión</button>
 
         <Dropdown.Menu style={{ minWidth: '33rem', padding: '1rem' }}>
           <div className="card text-center">

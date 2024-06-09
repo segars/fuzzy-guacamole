@@ -16,7 +16,9 @@ function Register({ setLoggedIn }) {
     .then(response => {
       // Maneja el registro exitoso
       alert("Registro exitoso");
-      setLoggedIn(true); // Cambia el estado de loggedIn en App.js
+      setLoggedIn(false);
+      setUsername(""); // Limpiar campo de usuario
+      setPassword(""); // Cambia el estado de loggedIn en App.js
     })
     .catch(error => {
       setError("Error al registrar: " + error.message);
