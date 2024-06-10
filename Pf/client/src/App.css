@@ -140,4 +140,151 @@ body {
   margin-top: 20px;
 }
 
+.tooltip-text {
+  position: absolute;
+  top: -5px;
+  left: 55px;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  display: inline-block;
+  white-space: nowrap;
+}
 
+
+/* App.css */
+
+.tooltip-text {
+  position: absolute;
+  top: -5px;
+  left: 35px;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.input-group.mb-3 {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.table {
+  margin-top: 20px;
+}/* App.css */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar-dark .navbar-brand {
+  color: #ffffff;
+}
+
+.card {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+}
+
+.input-group-text {
+  background-color: #007bff;
+  color: white;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.tooltip-text {
+  position: absolute;
+  top: -5px;
+  left: 35px;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.circle-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+
+/* App.css */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar-dark .navbar-brand {
+  color: #ffffff;
+}
+
+.card {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+}
+
+.input-group-text {
+  background-color: #007bff;
+  color: white;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.tooltip-text {
+  position: absolute;
+  top: -5px;
+  left: 35px;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.circle-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}

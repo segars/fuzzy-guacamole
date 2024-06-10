@@ -1,13 +1,11 @@
-// Login.js
 import React, { useState } from 'react';
 import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Login({ setLoggedIn }) {  // Asegúrate de que `setLoggedIn` se reciba como prop
-  const [username, setUsername] = useState("");
+function Login({ setLoggedIn, setUserId, setUsername }) {
+  const [username, setUsernameState] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
 
   const handleLogin = () => {
     Axios.post("http://localhost:3001/login", {
@@ -17,7 +15,9 @@ function Login({ setLoggedIn }) {  // Asegúrate de que `setLoggedIn` se reciba 
     .then(response => {
       // Maneja el login exitoso
       alert("Login exitoso");
-      setLoggedIn(true);  // Actualiza el estado `loggedIn` en `App.js`
+      setLoggedIn(true);
+      setUserId(response.data.userId); // Asegúrate de que el backend envía el userId
+      setUsername(response.data.username); // Asegúrate de que el backend envía el username
     })
     .catch(error => {
       setError("Error al iniciar sesión: " + error.message);
@@ -32,13 +32,13 @@ function Login({ setLoggedIn }) {  // Asegúrate de que `setLoggedIn` se reciba 
         </div>
         <div className="card-body">
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Usuario</span>
+            <span className="input-group-text" id="basic-addon1">Usuario o Correo Electrónico</span>
             <input
               type="text"
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={(event) => setUsernameState(event.target.value)}
               className="form-control" value={username}
-              placeholder="Ingrese su usuario"
-              aria-label="Usuario"
+              placeholder="Ingrese su usuario o correo electrónico"
+              aria-label="Username"
               aria-describedby="basic-addon1"
             />
           </div>
@@ -49,7 +49,7 @@ function Login({ setLoggedIn }) {  // Asegúrate de que `setLoggedIn` se reciba 
               onChange={(event) => setPassword(event.target.value)}
               className="form-control" value={password}
               placeholder="Ingrese su contraseña"
-              aria-label="Contraseña"
+              aria-label="Password"
               aria-describedby="basic-addon1"
             />
           </div>
