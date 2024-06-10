@@ -200,7 +200,7 @@ function App() {
       if (message) {
         message += " y ";
       }
-      message += " se está acabando";
+      message += "se está acabando";
     }
 
     setHoverMessages((prev) => ({
@@ -347,7 +347,7 @@ function App() {
               </Dropdown.Menu>
             </Dropdown>
 
-            <Table striped bordered hover>
+            <Table striped bordered hover className="table-centered">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -356,7 +356,6 @@ function App() {
                   <th>Fecha de caducidad</th>
                   <th>Cantidad</th>
                   <th>Costo</th>
-                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -374,23 +373,21 @@ function App() {
                       <td>{formattedFecha(val.Caducidad)}</td> 
                       <td>{val.Cantidad}</td>
                       <td>{val.Costo}</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <Button variant="primary" onClick={() => editarProducto(val)} className="me-2">Editar</Button>
-                          <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2">Eliminar</Button>
-                          {(isExpired || isLowStock) && (
-                            <div style={{ position: 'relative', display: 'inline-block' }}>
-                              <img 
-                                src='/alerta.png'
-                                alt="Producto" 
-                                onMouseEnter={() => handleMouseEnter(val)}
-                                onMouseLeave={() => handleMouseLeave(val)}
-                                style={{ width: '30px', height: '30px', cursor: 'pointer' }}
-                              />
-                              {hoverMessages[val.id] && <span className="tooltip-text">{hoverMessages[val.id]}</span>}
-                            </div>
-                          )}
-                        </div>
+                      <td className="d-flex align-items-center justify-content-center">
+                        <Button variant="primary" onClick={() => editarProducto(val)} className="me-2 btn-custom">Editar</Button>
+                        <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2 btn-custom">Eliminar</Button>
+                        {(isExpired || isLowStock) && (
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <img 
+                              src='/alerta.png'
+                              alt="Producto" 
+                              onMouseEnter={() => handleMouseEnter(val)}
+                              onMouseLeave={() => handleMouseLeave(val)}
+                              className="alert-icon"
+                            />
+                            {hoverMessages[val.id] && <span className="tooltip-text alert-animation">{hoverMessages[val.id]}</span>}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   );

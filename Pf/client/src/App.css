@@ -2,7 +2,7 @@
 
 /* General styles */
 body {
-  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+  background-color: #f0f0f0 !important;
 }
 
 .container {
@@ -11,28 +11,28 @@ body {
 
 /* Card styles */
 .card-header {
-  background-color: #00a8ff !important; /* Azul más claro */
+  background-color: #00a8ff !important;
   color: white !important;
   font-weight: bold !important;
 }
 
 .card-footer {
-  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
+  background-color: #f0f0f0 !important;
 }
 
 .btn-info {
-  background-color: #00a8ff !important; /* Azul más claro */
+  background-color: #00a8ff !important;
   border-color: #00a8ff !important;
-  transition: background-color 0.3s ease; /* Animación de transición */
+  transition: background-color 0.3s ease;
 }
 
 .btn-info:hover {
-  background-color: #0077b6 !important; /* Azul más oscuro al pasar el mouse */
+  background-color: #0077b6 !important;
 }
 
 /* Form input styles */
 .input-group-text {
-  background-color: #00a8ff !important; /* Azul más claro */
+  background-color: #00a8ff !important;
   color: white !important;
 }
 
@@ -42,249 +42,61 @@ body {
 }
 
 /* Table styles */
+.table-centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .table thead th {
-  background-color: #00a8ff !important; /* Azul más claro */
+  background-color: #00a8ff !important;
   color: white !important;
 }
 
 .table tbody tr:hover {
-  background-color: #e6e6e6 !important; /* Color de fondo más claro al pasar el mouse */
-}
-/* App.css */
-
-/* General styles */
-body {
-  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
-  font-family: Arial, sans-serif !important; /* Tipografía genérica */
+  background-color: #e6e6e6 !important;
 }
 
-.container {
-  margin-top: 50px !important;
+.btn-custom {
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-/* Card styles */
-.card-header {
-  background-color: #00a8ff !important; /* Azul más claro */
-  color: white !important;
-  font-weight: bold !important;
-  font-size: 20px !important; /* Tamaño de fuente más grande */
-  text-transform: uppercase !important; /* Convertir a mayúsculas */
+.btn-custom:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
-.card-footer {
-  background-color: #f0f0f0 !important; /* Color de fondo un poco más claro */
-}
-
-.btn-info {
-  background-color: #00a8ff !important; /* Azul más claro */
-  border-color: #00a8ff !important;
-  transition: background-color 0.3s ease; /* Animación de transición */
-  font-size: 16px !important; /* Tamaño de fuente del botón */
-  font-weight: bold !important;
-}
-
-.btn-info:hover {
-  background-color: #0077b6 !important; /* Azul más oscuro al pasar el mouse */
-}
-
-/* Form input styles */
-.input-group-text {
-  background-color: #00a8ff !important; /* Azul más claro */
-  color: white !important;
-  font-weight: bold !important;
-}
-
-.form-control {
-  font-size: 16px !important; /* Tamaño de fuente de los campos de entrada */
-}
-
-.form-control:focus {
-  border-color: #00a8ff !important;
-  box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25) !important;
-}
-
-/* Table styles */
-.table thead th {
-  background-color: #00a8ff !important; /* Azul más claro */
-  color: white !important;
-  font-weight: bold !important;
-  font-size: 16px !important; /* Tamaño de fuente de las cabeceras de tabla */
-}
-
-.table tbody tr:hover {
-  background-color: #e6e6e6 !important; /* Color de fondo más claro al pasar el mouse */
-}
-
-
-.dropdown-menu {
+.tooltip-text {
+  visibility: hidden;
+  width: auto;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s;
 }
 
-.dropdown-menu.show {
+.alert-icon:hover + .tooltip-text {
+  visibility: visible;
   opacity: 1;
-  transform: translateY(0);
 }
 
-
-.container {
-  margin-top: 20px;
+.alert-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  animation: pulse 1s infinite;
 }
 
-.dropdown-container {
-  margin-bottom: 20px;
-}
-
-.table {
-  margin-top: 20px;
-}
-
-.tooltip-text {
-  position: absolute;
-  top: -5px;
-  left: 55px;
-  background-color: #000;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  z-index: 1;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-
-/* App.css */
-
-.tooltip-text {
-  position: absolute;
-  top: -5px;
-  left: 35px;
-  background-color: #000;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  z-index: 1;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.input-group.mb-3 {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.table {
-  margin-top: 20px;
-}/* App.css */
-
-body {
-  background-color: #f8f9fa;
-}
-
-.navbar-dark .navbar-brand {
-  color: #ffffff;
-}
-
-.card {
-  margin: 0 auto;
-  max-width: 600px;
-}
-
-.card-header {
-  background-color: #007bff;
-  color: white;
-}
-
-.card-footer {
-  background-color: #f8f9fa;
-}
-
-.input-group-text {
-  background-color: #007bff;
-  color: white;
-}
-
-.table {
-  margin-top: 20px;
-}
-
-.tooltip-text {
-  position: absolute;
-  top: -5px;
-  left: 35px;
-  background-color: #000;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  z-index: 1;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.circle-button {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-
-/* App.css */
-
-body {
-  background-color: #f8f9fa;
-}
-
-.navbar-dark .navbar-brand {
-  color: #ffffff;
-}
-
-.card {
-  margin: 0 auto;
-  max-width: 600px;
-}
-
-.card-header {
-  background-color: #007bff;
-  color: white;
-}
-
-.card-footer {
-  background-color: #f8f9fa;
-}
-
-.input-group-text {
-  background-color: #007bff;
-  color: white;
-}
-
-.table {
-  margin-top: 20px;
-}
-
-.tooltip-text {
-  position: absolute;
-  top: -5px;
-  left: 35px;
-  background-color: #000;
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  z-index: 1;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.circle-button {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }

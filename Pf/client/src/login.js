@@ -6,8 +6,15 @@ function Login({ setLoggedIn, setUserId, setUsername }) {
   const [username, setUsernameState] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [warning, setWarning] = useState(false);
 
   const handleLogin = () => {
+    if (!username || !password) {
+      setWarning(true);
+      return;
+    }
+    setWarning(false);
+
     Axios.post("http://localhost:3001/login", {
       username,
       password
@@ -53,6 +60,7 @@ function Login({ setLoggedIn, setUserId, setUsername }) {
               aria-describedby="basic-addon1"
             />
           </div>
+          {warning && <p className="text-danger">Por favor, complete todos los campos.</p>}
           {error && <p className="text-danger">{error}</p>}
         </div>
         <div className="card-footer text-body-secondary">
