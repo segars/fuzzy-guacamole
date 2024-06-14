@@ -13,7 +13,14 @@ const db = mysql.createConnection({
   database: "productos"
 });
 
-db.connect();
+db.connect((err) => {
+  if (err) {
+    console.error("Error al conectar a la base de datos:", err.message);
+    process.exit(1);
+  } else {
+    console.log("Conectado a la base de datos MySQL");
+  }
+});
 
 app.post('/register', (req, res) => {
   const { username, password, fullName, email, phone, company } = req.body;
@@ -48,6 +55,10 @@ app.post("/login", (req, res) => {
 
 app.post("/create", (req, res) => {
   const { Producto, Fecha, Caducidad, Cantidad, Costo, userId } = req.body;
+
+  if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId) {
+    return res.status(400).send({ error: "Todos los campos son obligatorios" });
+  }
 
   db.query('INSERT INTO producto (Producto, Fecha, Caducidad, Cantidad, Costo, userId) VALUES (?, ?, ?, ?, ?, ?)', 
     [Producto, Fecha, Caducidad, Cantidad, Costo, userId], (err, result) => {

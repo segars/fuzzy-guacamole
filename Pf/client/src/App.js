@@ -4,11 +4,15 @@ import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Import FontAwesome
 import moment from 'moment';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Dropdown, Form, InputGroup, Button, Table, Navbar, Container, Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import { Modal, Form, InputGroup, Button, Table, Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
 import Login from './login';
 import Register from './Register';
 import Dashboard from './Dashboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+import logo from './assets/Logos.png';
 
 function App() {
   const [Producto, setProducto] = useState("");
@@ -20,7 +24,7 @@ function App() {
   const [productosList, setProductos] = useState([]);
   const [editar, setEditar] = useState(false);
   const [advertencia, setAdvertencia] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [filtro, setFiltro] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -29,7 +33,7 @@ function App() {
   const [username, setUsername] = useState("");
 
   const add = () => {
-    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo) {
+    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId) {
       setAdvertencia(true);
       return;
     }
@@ -41,21 +45,21 @@ function App() {
       Caducidad,
       Cantidad,
       Costo,
-      userId
+      userId,
     })
     .then((response) => {
       const newProduct = { id: response.data.id, Producto, Fecha, Caducidad, Cantidad, Costo };
       setProductos([...productosList, newProduct]);
-      alert("Producto registrado");
+      toast.success("Producto registrado");
       cancelar();
     })
     .catch(error => {
-      alert("Error al registrar el producto: " + error.message);
+      toast.error("Error al registrar el producto: " + error.message);
     });
   }
 
   const update = () => {
-    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo) {
+    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId) {
       setAdvertencia(true);
       return;
     }
@@ -85,17 +89,17 @@ function App() {
         return product;
       });
       setProductos(updatedProducts);
-      alert("Producto actualizado");
+      toast.success("Producto actualizado");
       cancelar();
     })
     .catch(error => {
-      alert("Error al actualizar el producto: " + error.message);
+      toast.error("Error al actualizar el producto: " + error.message);
     });
   }
 
   const editarProducto = (val) => {
     setEditar(true);
-    setDropdownOpen(true);
+    setModalOpen(true);
 
     setProducto(val.Producto);
     if (val.Fecha) {
@@ -117,20 +121,30 @@ function App() {
     setCosto("");
     setId("");
     setEditar(false);
-    setDropdownOpen(false);
+    setModalOpen(false);
   }
 
   const eliminarProducto = (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-      Axios.delete(`http://localhost:3001/delete/${id}/${userId}`)
-      .then(() => {
-        setProductos(productosList.filter(product => product.id !== id));
-        alert("Producto eliminado");
-      })
-      .catch(error => {
-        alert("Error al eliminar el producto: " + error.message);
-      });
-    }
+    Swal.fire({
+      title: '¿Estás seguro de que deseas eliminar este producto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.delete(`http://localhost:3001/delete/${id}/${userId}`)
+        .then(() => {
+          setProductos(productosList.filter(product => product.id !== id));
+          toast.success("Producto eliminado");
+        })
+        .catch(error => {
+          toast.error("Error al eliminar el producto: " + error.message);
+        });
+      }
+    });
   }
 
   const getProductos = useCallback(() => {
@@ -148,7 +162,7 @@ function App() {
         }
       })
       .catch(error => {
-        alert("Error al obtener los productos: " + error.message);
+        toast.error("Error al obtener los productos: " + error.message);
       });
     }
   }, [userId]);
@@ -178,14 +192,24 @@ function App() {
   }, [userId, getProductos]);
 
   const logout = () => {
-    if (window.confirm("¿Estás seguro de que deseas salir?")) {
-      localStorage.removeItem("userId");
-      localStorage.removeItem("username");
-      setLoggedIn(false);
-      setUserId(null);
-      setUsername("");
-      window.location.href = '/Login';
-    }
+    Swal.fire({
+      title: '¿Estás seguro de que deseas salir?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Cerrar Sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("username");
+        setLoggedIn(false);
+        setUserId(null);
+        setUsername("");
+        window.location.href = '/Login';
+      }
+    });
   }
 
   const handleMouseEnter = (producto) => {
@@ -234,18 +258,34 @@ function App() {
 
   return (
     <Router>
-      <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+      <Navbar bg="dark" variant="dark" expand="lg" className="mb-4 navbar">
         <Container>
-          <Navbar.Brand as={Link} to="/">Inventario</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">
+            <img
+              src={logo}
+              width="130"
+              height="130"
+              className="d-inline-block align-top"
+              alt="Logo"
+            />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
-              <Nav.Link as={Link} to="/">Productos</Nav.Link>
+            <Nav className="nav-center">
+              <CustomNavLink to="/">Productos</CustomNavLink>
+              <CustomNavLink to="/dashboard">Dashboard</CustomNavLink>
             </Nav>
-            <Nav>
-              <Nav.Link href="#">Bienvenido, {username}</Nav.Link>
-              <Nav.Link onClick={logout}>Cerrar Sesión</Nav.Link>
+            <Nav className="nav-right">
+              <Dropdown align="end">
+                <Dropdown.Toggle variant="link" className="nav-link">
+                  Bienvenido: {username}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Button} variant="danger" onClick={logout} className="text-white bg-danger logout-button">
+                    Cerrar Sesión
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -254,151 +294,166 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard productosList={productosList} />} />
         <Route path="/" element={
-          <Container>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2>Gestionar Productos</h2>
-              <Button variant="primary" onClick={() => setDropdownOpen(!dropdownOpen)}>Registrar un producto</Button>
-            </div>
+          <div className="background-container"> {/* Envuelve tu Container con el nuevo div */}
+            <Container>
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2>Gestionar Productos</h2>
+                <Button variant="primary" onClick={() => setModalOpen(true)}>Registrar un producto</Button>
+              </div>
 
-            <InputGroup className="mb-4">
-              <Form.Control
-                type="text"
-                placeholder="Buscar por nombre de producto"
-                value={filtro}
-                onChange={(e) => setFiltro(e.target.value)}
-              />
-            </InputGroup>
+              <InputGroup className="mb-4">
+                <Form.Control
+                  type="text"
+                  placeholder="Buscar por nombre de producto"
+                  value={filtro}
+                  onChange={(e) => setFiltro(e.target.value)}
+                />
+              </InputGroup>
 
-            <Dropdown show={dropdownOpen}>
-              <Dropdown.Menu style={{ minWidth: '33rem', padding: '1rem' }}>
-                <div className="card text-center">
-                  <div className="card-header">
-                    FORMULARIO DE REGISTRO
-                  </div>
-                  <div className="card-body">
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">Producto</span>
-                      <input 
+              <Modal show={modalOpen} onHide={cancelar} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Formulario de Registro</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form>
+                    <Form.Group className="mb-3" controlId="formProducto">
+                      <Form.Label>Producto</Form.Label>
+                      <Form.Control
                         type="text"
-                        onChange={(event) => setProducto(event.target.value)}
-                        className="form-control" value={Producto}
-                        placeholder="Ingrese el nombre del Producto" 
-                        aria-label="Producto" 
-                        aria-describedby="basic-addon1" 
+                        placeholder="Ingrese el nombre del Producto"
+                        value={Producto}
+                        onChange={(e) => setProducto(e.target.value)}
                       />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">Fecha de entrada</span>
-                      <input 
-                        type="date"
-                        onChange={(event) => setFecha(event.target.value)}
-                        className="form-control" value={Fecha}
-                        placeholder="Ingrese la fecha de entrada" 
-                        aria-label="Fecha de entrada" 
-                        aria-describedby="basic-addon1" 
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">Fecha de caducidad</span>
-                      <input 
-                        type="date"
-                        onChange={(event) => setCaducidad(event.target.value)}
-                        className="form-control" value={Caducidad}
-                        placeholder="Ingrese la fecha de caducidad"
-                        aria-label="Fecha de caducidad" 
-                        aria-describedby="basic-addon1" 
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">Cantidad</span>
-                      <input 
-                        type="number"
-                        onChange={(event) => setCantidad(event.target.value)}
-                        className="form-control" value={Cantidad}
-                        placeholder="Ingrese la cantidad del producto" 
-                        aria-label="Cantidad" 
-                        aria-describedby="basic-addon1" 
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">Costo del Producto</span>
-                      <input 
-                        type="number"
-                        onChange={(event) => setCosto(event.target.value)}
-                        className="form-control" value={Costo}
-                        placeholder="Ingrese el precio de este producto" 
-                        aria-label="Costo del Producto" 
-                        aria-describedby="basic-addon1" 
-                      />
-                    </div>
-                  </div>
-                  <div className="card-footer text-body-secondary">
-                    {
-                      editar ?
-                        <div>
-                          <Button variant="outline-warning" onClick={update}>Actualizar</Button>  
-                          <Button variant="outline-danger" onClick={cancelar}>Cancelar</Button>
-                        </div>
-                        : <Button variant="info" onClick={add}>Registrar</Button>
-                    }
-                    {advertencia && <p className="text-danger">Por favor, complete todos los campos.</p>}
-                  </div>
-                </div>
-              </Dropdown.Menu>
-            </Dropdown>
+                    </Form.Group>
 
-            <Table striped bordered hover className="table-centered">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Producto</th>
-                  <th>Fecha de ingreso</th>
-                  <th>Fecha de caducidad</th>
-                  <th>Cantidad</th>
-                  <th>Costo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productosFiltrados.map((val) => {
-                  const currentDate = moment();
-                  const expirationDate = moment(val.Caducidad);
-                  const isExpired = currentDate.isAfter(expirationDate);
-                  const isLowStock = val.Cantidad <= 5;
-                  
-                  return (
-                    <tr key={val.id}>
-                      <td>{val.id}</td>
-                      <td>{val.Producto}</td>
-                      <td>{formattedFecha(val.Fecha)}</td> 
-                      <td>{formattedFecha(val.Caducidad)}</td> 
-                      <td>{val.Cantidad}</td>
-                      <td>{val.Costo}</td>
-                      <td className="d-flex align-items-center justify-content-center">
-                        <Button variant="primary" onClick={() => editarProducto(val)} className="me-2 btn-custom">Editar</Button>
-                        <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2 btn-custom">Eliminar</Button>
-                        {(isExpired || isLowStock) && (
-                          <div style={{ position: 'relative', display: 'inline-block' }}>
-                            <img 
-                              src='/alerta.png'
-                              alt="Producto" 
-                              onMouseEnter={() => handleMouseEnter(val)}
-                              onMouseLeave={() => handleMouseLeave(val)}
-                              className="alert-icon"
-                            />
-                            {hoverMessages[val.id] && <span className="tooltip-text alert-animation">{hoverMessages[val.id]}</span>}
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Container>
+                    <Form.Group className="mb-3" controlId="formFechaEntrada">
+                      <Form.Label>Fecha de entrada</Form.Label>
+                      <Form.Control
+                        type="date"
+                        placeholder="Ingrese la fecha de entrada"
+                        value={Fecha}
+                        onChange={(e) => setFecha(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formFechaCaducidad">
+                      <Form.Label>Fecha de caducidad</Form.Label>
+                      <Form.Control
+                        type="date"
+                        placeholder="Ingrese la fecha de caducidad"
+                        value={Caducidad}
+                        onChange={(e) => setCaducidad(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formCantidad">
+                      <Form.Label>Cantidad</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Ingrese la cantidad del producto"
+                        value={Cantidad}
+                        onChange={(e) => setCantidad(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formCosto">
+                      <Form.Label>Costo del Producto</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Ingrese el precio de este producto"
+                        value={Costo}
+                        onChange={(e) => setCosto(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  {editar ? (
+                    <>
+                      <Button variant="warning" onClick={update}>
+                        Actualizar
+                      </Button>
+                      <Button variant="secondary" onClick={cancelar}>
+                        Cancelar
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="primary" onClick={add}>
+                      Registrar
+                    </Button>
+                  )}
+                  {advertencia && (
+                    <p className="text-danger">Por favor, complete todos los campos.</p>
+                  )}
+                </Modal.Footer>
+              </Modal>
+
+              <Table striped bordered hover className="table-centered">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Fecha de ingreso</th>
+                    <th>Fecha de caducidad</th>
+                    <th>Cantidad</th>
+                    <th>Costo</th>
+                    <th>Opciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productosFiltrados.map((val) => {
+                    const currentDate = moment();
+                    const expirationDate = moment(val.Caducidad);
+                    const isExpired = currentDate.isAfter(expirationDate);
+                    const isLowStock = val.Cantidad <= 5;
+                    
+                    return (
+                      <tr key={val.id}>
+                        <td>{val.id}</td>
+                        <td>{val.Producto}</td>
+                        <td>{formattedFecha(val.Fecha)}</td> 
+                        <td>{formattedFecha(val.Caducidad)}</td> 
+                        <td>{val.Cantidad}</td>
+                        <td>{val.Costo}</td>
+                        <td className="d-flex align-items-center justify-content-center">
+                          <Button variant="primary" onClick={() => editarProducto(val)} className="me-2 btn-custom">Editar</Button>
+                          <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2 btn-custom">Eliminar</Button>
+                          {(isExpired || isLowStock) && (
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                              <img 
+                                src='/alerta.png'
+                                alt="Producto" 
+                                onMouseEnter={() => handleMouseEnter(val)}
+                                onMouseLeave={() => handleMouseLeave(val)}
+                                className="alert-icon"
+                              />
+                              {hoverMessages[val.id] && <span className="tooltip-text alert-animation">{hoverMessages[val.id]}</span>}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+              <ToastContainer />
+            </Container>
+          </div>
         } />
       </Routes>
     </Router>
   );
 }
+
+const CustomNavLink = ({ to, children }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <Nav.Link as={Link} to={to} active={isActive} className={isActive ? 'active-link' : ''}>
+      {children}
+    </Nav.Link>
+  );
+};
 
 export default App;

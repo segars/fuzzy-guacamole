@@ -1,12 +1,30 @@
-/* App.css */
-
 /* General styles */
 body {
   background-color: #f0f0f0 !important;
+  font-family: Arial, sans-serif !important;
 }
 
 .container {
   margin-top: 50px !important;
+}
+
+.background-container {
+  position: relative;
+  z-index: 1 !important; /* Asegura que el contenido principal esté por encima del fondo */
+}
+
+.background-container::before {
+  content: "" !important;
+  background: url('./assets/logo_s.png') center center no-repeat fixed !important; /* Añade 'fixed' para que la imagen esté fija */
+  background-size: contain !important; /* Ajusta el tamaño según sea necesario */
+  opacity: 0.2 !important; /* Ajusta la transparencia aquí */
+  position: fixed !important; /* Cambia 'absolute' a 'fixed' */
+  top: 60% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important; /* Centra la imagen */
+  width: 100% !important;
+  height: 90% !important;
+  z-index: -2 !important; /* Asegura que el fondo esté detrás del contenido */
 }
 
 /* Card styles */
@@ -14,6 +32,8 @@ body {
   background-color: #00a8ff !important;
   color: white !important;
   font-weight: bold !important;
+  font-size: 20px !important;
+  text-transform: uppercase !important;
 }
 
 .card-footer {
@@ -23,17 +43,23 @@ body {
 .btn-info {
   background-color: #00a8ff !important;
   border-color: #00a8ff !important;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
 }
 
 .btn-info:hover {
   background-color: #0077b6 !important;
 }
 
-/* Form input styles */
 .input-group-text {
   background-color: #00a8ff !important;
   color: white !important;
+  font-weight: bold !important;
+}
+
+.form-control {
+  font-size: 16px !important;
 }
 
 .form-control:focus {
@@ -42,61 +68,452 @@ body {
 }
 
 /* Table styles */
-.table-centered {
-  margin-left: auto;
-  margin-right: auto;
+.table {
+  margin: 0 auto !important;
+  width: 80% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 15px !important;
 }
 
 .table thead th {
-  background-color: #00a8ff !important;
+  background-color: #007bff !important;
   color: white !important;
+  text-align: center !important;
+  font-size: 16px !important;
+  text-transform: uppercase !important;
+  padding: 10px !important;
+  border: 1px solid white !important;
+  border-radius: 8px 8px 0 0 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  margin: 0 5px !important;
+}
+
+.table thead th:not(:last-child) {
+  margin-right: 5px !important;
 }
 
 .table tbody tr:hover {
   background-color: #e6e6e6 !important;
+  transition: background-color 0.3s ease !important;
 }
 
-.btn-custom {
-  border-radius: 20px;
-  transition: background-color 0.3s, transform 0.3s;
+.table tbody td {
+  text-align: center !important;
+  padding: 10px !important;
+  background: white !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
 }
 
-.btn-custom:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+.table tbody tr {
+  transition: transform 0.3s ease !important;
 }
 
-.tooltip-text {
-  visibility: hidden;
-  width: auto;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 150%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
+.table tbody tr:hover {
+  transform: scale(1.02) !important;
 }
 
-.alert-icon:hover + .tooltip-text {
-  visibility: visible;
-  opacity: 1;
+.table-options {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
+.table-options button {
+  margin-right: 5px !important;
+}
+
+/* Tooltip and alert icon styles */
 .alert-icon {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  animation: pulse 1s infinite;
+  width: 25px !important;
+  height: 25px !important;
+  cursor: pointer !important;
+  animation: pulse 1s infinite !important;
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0%, 100% {
+    transform: scale(1) !important;
+  }
+  50% {
+    transform: scale(1.1) !important;
+  }
+}
+
+.tooltip-text {
+  position: absolute !important;
+  top: -35px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  padding: 5px !important;
+  border-radius: 5px !important;
+  z-index: 1 !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.alert-icon:hover + .tooltip-text {
+  opacity: 1 !important;
+}
+
+/* Registration form styles */
+.registration-form {
+  width: 100% !important;
+  max-width: 600px !important;
+  margin: 20px auto !important;
+  padding: 20px !important;
+  background-color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+  animation: fadeIn 0.5s ease-in-out !important;
+}
+
+.registration-form .input-group {
+  margin-bottom: 15px !important;
+}
+
+.registration-form .btn-info {
+  width: 100% !important;
+}
+
+/* Modal confirmation animation */
+.modal-confirmation {
+  animation: fadeIn 0.3s, fadeOut 0.3s 2.7s !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 !important; }
+  to { opacity: 1 !important; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1 !important; }
+  to { opacity: 0 !important; }
+}
+
+/* Navigation styles */
+.active-link {
+  color: #00a8ff !important;
+  font-weight: bold !important;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.5rem !important; /* Ajusta el tamaño según tus necesidades */
+  font-weight: bold !important;
+  color: #ffffff !important; /* Color blanco para el texto */
+}
+
+.navbar-nav .nav-link.active {
+  color: #00a8ff !important; /* Color azul para el enlace activo */
+}
+
+.navbar-brand {
+  position: absolute !important;
+  left: 90px !important; /* Ajusta esta cantidad según sea necesario */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.navbar {
+  position: relative !important; /* Asegura que el contenedor padre tenga un contexto de posicionamiento */
+  height: 120px !important; /* Ajusta la altura según sea necesario */
+  padding-left: 42.5% !important; /* Ajusta esta cantidad para que el contenido no se superponga al logo */
+}
+
+.navbar .ms-auto {
+  margin-left: auto !important; /* Asegura que el contenido de la derecha esté alineado correctamente */
+}
+
+.nav-right {
+  margin-left: auto !important;
+  margin-right: 10% !important; /* Alinea el contenedor completamente a la derecha */
+}
+
+.nav-center {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu.show.dropdown-menu-end {
+  min-width: 200px !important; /* Ajusta el ancho mínimo según sea necesario */
+  width: auto !important; /* Asegúrate de que el ancho se ajuste automáticamente */
+  padding: 10px !important; /* Añade un poco de padding para espaciar el contenido */
+  background-color: #ffffff !important; /* Fondo blanco para el contenedor */
+  border-radius: 5px !important; /* Bordes redondeados para el contenedor */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Añade una sombra para el contenedor */
+}
+
+/* Modal styles */
+.modal-content {
+  border-radius: 10px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-header {
+  background-color: #00a8ff !important;
+  color: white !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+
+.modal-title {
+  font-weight: bold !important;
+  font-size: 20px !important;
+}
+
+.modal-body {
+  padding: 20px !important;
+}
+
+.modal-footer {
+  justify-content: center !important;
+  padding: 15px !important;
+}
+
+.btn-close {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+.btn-primary {
+  background-color: #00a8ff !important;
+  border-color: #00a8ff !important;
+  transition: background-color 0.3s ease !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.btn-primary:hover {
+  background-color: #0077b6 !important;
+}
+
+.form-label {
+  font-weight: bold !important;
+  color: #333 !important;
+}
+
+.form-control {
+  border-radius: 5px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.form-control:focus {
+  border-color: #00a8ff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 168, 255, 0.25) !important;
+}
+
+/* Logout button styles */
+.logout-button {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 20px !important; /* Añade más padding para un botón más grande */
+  background-color: #d33 !important; /* Rojo para el botón */
+  color: #fff !important;
+  border: none !important;
+  border-radius: 5px !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  font-size: 16px !important; /* Ajusta el tamaño de la fuente */
+  font-weight: bold !important; /* Haz el texto en negrita */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; /* Añade sombra */
+}
+
+.logout-button:hover {
+  background-color: #a00 !important; /* Cambia el color de fondo al hacer hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2) !important; /* Aumenta la sombra al hacer hover */
+}
+
+/* Dashboard styles */
+.dashboard-container {
+  padding: 20px !important;
+}
+
+.dashboard-title {
+  text-align: center !important;
+  font-weight: bold !important;
+  margin-bottom: 30px !important;
+}
+
+.dashboard-card {
+  border-radius: 10px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.chart-container {
+  position: relative !important;
+  height: 300px !important; /* Ajusta la altura según sea necesario */
+  width: 100% !important;
+  max-width: 600px !important; /* Ajusta el ancho máximo según sea necesario */
+  margin: 0 auto !important; /* Centra la gráfica horizontalmente */
+}
+
+/* Estilos adicionales para el botón de Bienvenido */
+.dropdown-toggle {
+  transition: all 0.3s ease !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #ffffff !important;
+}
+
+.dropdown-toggle:hover {
+  transform: scale(1.1) !important;
+  background-color: #0077b6 !important;
+  color: #ffffff !important;
+}
+
+/* Estilos para el Dashboard */
+.dashboard-card {
+  border-radius: 15px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dashboard-card .card-title {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: #333 !important;
+  margin-bottom: 15px !important;
+}
+
+.dashboard-card .card-text {
+  font-size: 16px !important;
+  color: #666 !important;
+}
+
+.dashboard-card ul {
+  padding-left: 20px !important;
+  list-style: none !important;
+}
+
+.dashboard-card ul li {
+  font-size: 14px !important;
+  color: #666 !important;
+  margin-bottom: 10px !important;
+}
+
+.dashboard-card ul li::before {
+  content: '•' !important;
+  color: #007bff !important;
+  display: inline-block !important;
+  width: 1em !important;
+  margin-left: -1em !important;
+}
+
+.dashboard-card .card-footer {
+  background-color: #f8f9fa !important;
+  border-top: 1px solid #dee2e6 !important;
+  padding: 10px 20px !important;
+}
+
+.dashboard-card .btn {
+  margin-top: 10px !important;
+  width: 100% !important;
+  padding: 10px !important;
+  font-size: 14px !important;
+  border-radius: 5px !important;
+}
+
+.dashboard-card .btn-primary {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.dashboard-card .btn-primary:hover {
+  background-color: #0056b3 !important;
+  border-color: #0056b3 !important;
+}
+
+.dashboard-card .btn-secondary {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.dashboard-card .btn-secondary:hover {
+  background-color: #5a6268 !important;
+  border-color: #545b62 !important;
+}
+
+.dashboard-card .badge {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  padding: 5px 10px !important;
+  border-radius: 5px !important;
+}
+
+.dashboard-card .badge-danger {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.dashboard-card .badge-warning {
+  background-color: #ffc107 !important;
+  color: black !important;
+}
+
+.dashboard-card .badge-success {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+/* Estilos para mejorar la apariencia del texto en las tarjetas del dashboard */
+.dashboard-card .card-title {
+  font-size: 1.25rem !important; /* Aumenta el tamaño de la fuente */
+  font-weight: bold !important; /* Aplica negrita */
+  color: #333 !important; /* Cambia el color del texto */
+}
+
+.dashboard-card .card-text {
+  font-size: 1.5rem !important; /* Aumenta el tamaño de la fuente */
+  font-weight: 600 !important; /* Aplica negrita */
+  color: #555 !important; /* Cambia el color del texto */
+}
+
+/* Estilos para las listas dentro de las tarjetas */
+.dashboard-card ul {
+  list-style-type: none !important; /* Elimina los puntos de la lista */
+  padding: 0 !important;
+  text-align: center !important; /* Centra el contenido de la lista */
+}
+
+.dashboard-card ul li {
+  font-size: 1rem !important; /* Aumenta el tamaño de la fuente */
+  font-weight: 400 !important; /* Aplica un peso de fuente medio */
+  color: #666 !important; /* Cambia el color del texto */
+  padding: 5px 0 !important; /* Añade espacio entre los elementos de la lista */
+}
+
+.chart-card {
+  max-width: 80% !important;
+  margin: 0 auto !important; /* Centra el contenedor horizontalmente */
+}
+
+.chart-container {
+  position: relative !important;
+  height: 300px !important; /* Ajusta la altura según sea necesario */
+  width: 100% !important;
+  max-width: 600px !important; /* Ajusta el ancho máximo según sea necesario */
+  margin: 0 auto !important; /* Centra la gráfica horizontalmente */
+}
+
+.product-list {
+  padding-left: 0 !important; /* Quita el padding izquierdo */
+  text-align: center !important; /* Centra el texto */
+}
+
+.product-list li {
+  list-style-type: none !important; /* Quita los puntos de la lista */
 }
