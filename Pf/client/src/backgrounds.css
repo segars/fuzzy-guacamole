@@ -1,0 +1,12 @@
+.main-background {
+    background: linear-gradient(135deg, #c8ddf1, #bec2c5) !important; /* Fondo degradado */
+    min-height: 100vh;
+    padding-top: 20px;
+  }
+
+
+  .password-strength {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  

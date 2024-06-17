@@ -1,4 +1,5 @@
 import './App.css';
+import './backgrounds.css'; // Importa el archivo de estilos de fondo
 import React, { useState, useEffect, useCallback } from 'react';
 import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,7 +28,6 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [filtro, setFiltro] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
   const [hoverMessages, setHoverMessages] = useState({});
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
@@ -207,7 +207,7 @@ function App() {
         setLoggedIn(false);
         setUserId(null);
         setUsername("");
-        window.location.href = '/Login';
+        window.location.href = '/';
       }
     });
   }
@@ -242,17 +242,12 @@ function App() {
 
   if (!loggedIn) {
     return (
-      <div className="container">
-        <div className="d-flex justify-content-center mb-3">
-          <Button variant="primary" onClick={() => setIsRegister(false)}>
-            Iniciar Sesión
-          </Button>
-          <Button variant="secondary" onClick={() => setIsRegister(true)}>
-            Registrarse
-          </Button>
-        </div>
-        {isRegister ? <Register setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} setUserId={(userId) => { setUserId(userId); localStorage.setItem("userId", userId); }} setUsername={(username) => { setUsername(username); localStorage.setItem("username", username); }} getProductos={getProductos} />}  
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/register" element={<Register setLoggedIn={setLoggedIn} />} />
+          <Route path="/" element={<Login setLoggedIn={setLoggedIn} setUserId={(userId) => { setUserId(userId); localStorage.setItem("userId", userId); }} setUsername={(username) => { setUsername(username); localStorage.setItem("username", username); }} getProductos={getProductos} />} />
+        </Routes>
+      </Router>
     );
   }
 
@@ -294,7 +289,7 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard productosList={productosList} />} />
         <Route path="/" element={
-          <div className="background-container"> {/* Envuelve tu Container con el nuevo div */}
+          <div className="background-container main-background"> {/* Aplica la clase main-background */}
             <Container>
               <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Gestionar Productos</h2>

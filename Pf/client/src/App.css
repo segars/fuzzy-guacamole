@@ -1,6 +1,6 @@
 /* General styles */
 body {
-  background-color: #f0f0f0 !important;
+  background: linear-gradient(135deg, #606163, #61baffb9) !important; /* Fondo degradado */
   font-family: Arial, sans-serif !important;
 }
 
@@ -8,23 +8,113 @@ body {
   margin-top: 50px !important;
 }
 
-.background-container {
-  position: relative;
-  z-index: 1 !important; /* Asegura que el contenido principal esté por encima del fondo */
+/* Login and Register styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.background-container::before {
-  content: "" !important;
-  background: url('./assets/logo_s.png') center center no-repeat fixed !important; /* Añade 'fixed' para que la imagen esté fija */
-  background-size: contain !important; /* Ajusta el tamaño según sea necesario */
-  opacity: 0.2 !important; /* Ajusta la transparencia aquí */
-  position: fixed !important; /* Cambia 'absolute' a 'fixed' */
-  top: 60% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important; /* Centra la imagen */
-  width: 100% !important;
-  height: 90% !important;
-  z-index: -2 !important; /* Asegura que el fondo esté detrás del contenido */
+.auth-card {
+  width: 100%;
+  max-width: 1200px;
+  height: 700px; /* Aumenta la altura del contenedor */
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  background: white;
+}
+
+.auth-card .left,
+.auth-card .right {
+  flex: 1;
+  padding: 30px;
+}
+
+.auth-card .left {
+  background: linear-gradient(135deg, #00a8ff, #0066cc);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card .left img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.auth-card .left h1 {
+  font-family: 'Arial, sans-serif';
+  font-weight: bold;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.auth-card .left p {
+  font-family: 'Arial, sans-serif';
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+.auth-card .right {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-card .right h2 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group-text {
+  background-color: #00a8ff !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 5px 0 0 5px;
+}
+
+.form-control {
+  font-size: 16px !important;
+  border-radius: 0 5px 5px 0;
+  border: 1px solid #00a8ff;
+}
+
+.form-control:focus {
+  border-color: #00a8ff !important;
+  box-shadow: 0 0 5px rgba(0, 168, 255, 0.5) !important;
+}
+
+.btn-info {
+  background-color: #00a8ff !important;
+  border-color: #00a8ff !important;
+  transition: background-color 0.3s ease !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px 0;
+}
+
+.btn-info:hover {
+  background-color: #0077b6 !important;
+}
+
+.text-danger {
+  margin-top: 10px;
+  text-align: center;
 }
 
 /* Card styles */
@@ -38,18 +128,6 @@ body {
 
 .card-footer {
   background-color: #f0f0f0 !important;
-}
-
-.btn-info {
-  background-color: #00a8ff !important;
-  border-color: #00a8ff !important;
-  transition: background-color 0.3s ease !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-}
-
-.btn-info:hover {
-  background-color: #0077b6 !important;
 }
 
 .input-group-text {
@@ -516,4 +594,17 @@ body {
 
 .product-list li {
   list-style-type: none !important; /* Quita los puntos de la lista */
+}
+
+
+.password-strength {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.password-strength-bar {
+  height: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: width 0.3s, background-color 0.3s;
 }
