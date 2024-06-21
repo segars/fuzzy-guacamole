@@ -31,9 +31,11 @@ function App() {
   const [hoverMessages, setHoverMessages] = useState({});
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+  const [company, setCompany] = useState("");
 
   const add = () => {
-    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId) {
+    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId || !company) {
       setAdvertencia(true);
       return;
     }
@@ -46,9 +48,10 @@ function App() {
       Cantidad,
       Costo,
       userId,
+      company
     })
     .then((response) => {
-      const newProduct = { id: response.data.id, Producto, Fecha, Caducidad, Cantidad, Costo };
+      const newProduct = { id: response.data.id, Producto, Fecha, Caducidad, Cantidad, Costo, company };
       setProductos([...productosList, newProduct]);
       toast.success("Producto registrado");
       cancelar();
@@ -59,7 +62,7 @@ function App() {
   }
 
   const update = () => {
-    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId) {
+    if (!Producto || !Fecha || !Caducidad || !Cantidad || !Costo || !userId || !company) {
       setAdvertencia(true);
       return;
     }
@@ -72,7 +75,8 @@ function App() {
       Caducidad,
       Cantidad,
       Costo,
-      userId
+      userId,
+      company
     })
     .then((response) => {
       const updatedProducts = productosList.map(product => {
@@ -83,7 +87,8 @@ function App() {
             Fecha,
             Caducidad,
             Cantidad,
-            Costo
+            Costo,
+            company
           };
         }
         return product;
@@ -135,7 +140,7 @@ function App() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        Axios.delete(`http://localhost:3001/delete/${id}/${userId}`)
+        Axios.delete(`http://localhost:3001/delete/${id}/${userId}/${company}`)
         .then(() => {
           setProductos(productosList.filter(product => product.id !== id));
           toast.success("Producto eliminado");
@@ -148,8 +153,8 @@ function App() {
   }
 
   const getProductos = useCallback(() => {
-    if (userId) {
-      Axios.get(`http://localhost:3001/productos/${userId}`)
+    if (company) {
+      Axios.get(`http://localhost:3001/productos/${company}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           const validProducts = response.data.map(product => ({
@@ -165,7 +170,7 @@ function App() {
         toast.error("Error al obtener los productos: " + error.message);
       });
     }
-  }, [userId]);
+  }, [company]);
 
   const formattedFecha = (fecha) => {
     return moment(fecha).format('YYYY-MM-DD');
@@ -178,18 +183,22 @@ function App() {
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     const storedUsername = localStorage.getItem("username");
+    const storedRole = localStorage.getItem("role");
+    const storedCompany = localStorage.getItem("company");
     if (storedUserId) {
       setUserId(storedUserId);
       setUsername(storedUsername);
+      setRole(storedRole);
+      setCompany(storedCompany);
       setLoggedIn(true);
     }
   }, []);
 
   useEffect(() => {
-    if (userId) {
+    if (company) {
       getProductos();
     }
-  }, [userId, getProductos]);
+  }, [company, getProductos]);
 
   const logout = () => {
     Swal.fire({
@@ -204,9 +213,13 @@ function App() {
       if (result.isConfirmed) {
         localStorage.removeItem("userId");
         localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        localStorage.removeItem("company");
         setLoggedIn(false);
         setUserId(null);
         setUsername("");
+        setRole("");
+        setCompany("");
         window.location.href = '/';
       }
     });
@@ -245,7 +258,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/register" element={<Register setLoggedIn={setLoggedIn} />} />
-          <Route path="/" element={<Login setLoggedIn={setLoggedIn} setUserId={(userId) => { setUserId(userId); localStorage.setItem("userId", userId); }} setUsername={(username) => { setUsername(username); localStorage.setItem("username", username); }} getProductos={getProductos} />} />
+          <Route path="/" element={<Login setLoggedIn={setLoggedIn} setUserId={(userId) => { setUserId(userId); localStorage.setItem("userId", userId); }} setUsername={(username) => { setUsername(username); localStorage.setItem("username", username); }} setRole={(role) => { setRole(role); localStorage.setItem("role", role); }} setCompany={(company) => { setCompany(company); localStorage.setItem("company", company); }} getProductos={getProductos} />} />
         </Routes>
       </Router>
     );
@@ -268,7 +281,7 @@ function App() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="nav-center">
               <CustomNavLink to="/">Productos</CustomNavLink>
-              <CustomNavLink to="/dashboard">Dashboard</CustomNavLink>
+              {role === "admin" && <CustomNavLink to="/dashboard">Dashboard</CustomNavLink>}
             </Nav>
             <Nav className="nav-right">
               <Dropdown align="end">
@@ -287,13 +300,13 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path="/dashboard" element={<Dashboard productosList={productosList} />} />
+        {role === "admin" && <Route path="/dashboard" element={<Dashboard productosList={productosList} />} />}
         <Route path="/" element={
           <div className="background-container main-background"> {/* Aplica la clase main-background */}
             <Container>
               <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Gestionar Productos</h2>
-                <Button variant="primary" onClick={() => setModalOpen(true)}>Registrar un producto</Button>
+                {role === "admin" && <Button variant="primary" onClick={() => setModalOpen(true)}>Registrar un producto</Button>}
               </div>
 
               <InputGroup className="mb-4">
@@ -411,8 +424,12 @@ function App() {
                         <td>{val.Cantidad}</td>
                         <td>{val.Costo}</td>
                         <td className="d-flex align-items-center justify-content-center">
-                          <Button variant="primary" onClick={() => editarProducto(val)} className="me-2 btn-custom">Editar</Button>
-                          <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2 btn-custom">Eliminar</Button>
+                          {role === "admin" && (
+                            <>
+                              <Button variant="primary" onClick={() => editarProducto(val)} className="me-2 btn-custom">Editar</Button>
+                              <Button variant="danger" onClick={() => eliminarProducto(val.id)} className="me-2 btn-custom">Eliminar</Button>
+                            </>
+                          )}
                           {(isExpired || isLowStock) && (
                             <div style={{ position: 'relative', display: 'inline-block' }}>
                               <img 
@@ -445,7 +462,7 @@ const CustomNavLink = ({ to, children }) => {
   const isActive = location.pathname === to;
 
   return (
-    <Nav.Link as={Link} to={to} active={isActive} className={isActive ? 'active-link' : ''}>
+    <Nav.Link as={Link} to={to} className={isActive ? 'active-link' : ''}>
       {children}
     </Nav.Link>
   );

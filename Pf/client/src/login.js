@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; // Asegúrate de importar tu archivo CSS
+import './App.css';
 import logo from './assets/Logos.png';
 
-function Login({ setLoggedIn, setUserId, setUsername }) {
+function Login({ setLoggedIn, setUserId, setUsername, setRole, setCompany }) {
   const [username, setUsernameState] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,6 +26,12 @@ function Login({ setLoggedIn, setUserId, setUsername }) {
       setLoggedIn(true);
       setUserId(response.data.userId);
       setUsername(response.data.username);
+      setRole(response.data.role);
+      setCompany(response.data.company);
+      localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("company", response.data.company); // Guarda la empresa en el local storage
     })
     .catch(error => {
       setError("Error al iniciar sesión: " + error.message);

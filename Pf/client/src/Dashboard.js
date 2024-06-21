@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useMemo } from 'react';
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { Card, Container, Row, Col, Button, Collapse, Form } from 'react-bootstrap';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,11 +11,15 @@ import {
   BarController,
 } from 'chart.js';
 import moment from 'moment';
+import Axios from 'axios';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, BarController);
 
-const Dashboard = ({ productosList }) => {
+const Dashboard = ({ productosList, company }) => {
   const chartRef = useRef(null);
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [inviteError, setInviteError] = useState("");
 
   const totalProductos = productosList.length;
   const productosPorVencerList = productosList.filter(producto => {
@@ -64,6 +68,19 @@ const Dashboard = ({ productosList }) => {
       }
     };
   }, [data, options]);
+
+  const handleInvite = () => {
+    Axios.post("http://localhost:3001/send-employee-invitation", { email, company })
+      .then(response => {
+        alert(response.data.message);
+        setEmail("");
+        setShowInviteForm(false);
+        setInviteError("");
+      })
+      .catch(error => {
+        setInviteError(error.response.data.error);
+      });
+  };
 
   return (
     <Container>
@@ -125,6 +142,34 @@ const Dashboard = ({ productosList }) => {
               </ul>
             </Card.Body>
           </Card>
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col>
+          <Button onClick={() => setShowInviteForm(!showInviteForm)} aria-controls="invite-form" aria-expanded={showInviteForm}>
+            {showInviteForm ? 'Ocultar Formulario de Invitación' : 'Mostrar Formulario de Invitación'}
+          </Button>
+          <Collapse in={showInviteForm}>
+            <div id="invite-form" className="mt-4">
+              <Card>
+                <Card.Body>
+                  <Form>
+                    <Form.Group controlId="formInviteEmail">
+                      <Form.Label>Correo Electrónico del Empleado</Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Ingrese el correo electrónico"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Button className="mt-3" onClick={handleInvite}>Enviar Invitación</Button>
+                    {inviteError && <p className="text-danger mt-2">{inviteError}</p>}
+                  </Form>
+                </Card.Body>
+              </Card>
+            </div>
+          </Collapse>
         </Col>
       </Row>
       <Card className="dashboard-card mt-4 chart-card">
